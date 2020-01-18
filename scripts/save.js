@@ -14,3 +14,7 @@ window.onload = function() {
 MasterStorage = JSON.parse(localStorage.getItem('masterstorage'));
 decknum = JSON.parse(localStorage.getItem('decknum'));
 }
+if (MasterStorage == null && decknum == null) {
+	MasterStorage = [];
+	decknum = -1;
+} 
