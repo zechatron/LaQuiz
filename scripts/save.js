@@ -15,6 +15,7 @@ MasterStorage = JSON.parse(localStorage.getItem('masterstorage'));
 decknum = JSON.parse(localStorage.getItem('decknum'));
 
 if (MasterStorage == null && decknum == null) {
+	console.log("ssssss");
 	MasterStorage = [];
 	decknum = -1;
 } 
