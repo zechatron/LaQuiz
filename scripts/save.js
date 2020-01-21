@@ -11,12 +11,23 @@ localStorage.setItem('decknum', JSON.stringify(decknum));
 }
 // To Load:
 window.onload = function() {
-MasterStorage = JSON.parse(localStorage.getItem('masterstorage'));
-decknum = JSON.parse(localStorage.getItem('decknum'));
+	MasterStorage = JSON.parse(localStorage.getItem('masterstorage'));
+	decknum = JSON.parse(localStorage.getItem('decknum'));
 
-if (MasterStorage == null && decknum == null) {
+	if (MasterStorage == null && decknum == null) {
 	console.log("ssssss");
 	MasterStorage = [];
 	decknum = -1;
-} 
+	} 
+}
+// Clear Local Storage:
+function clrStorage() {
+	MasterStorage = [];
+	decknum = -1;
+	localStorage.setItem('masterstorage', JSON.stringify(MasterStorage));
+	localStorage.setItem('decknum', JSON.stringify(decknum));
+	MasterStorage = JSON.parse(localStorage.getItem('masterstorage'));
+	decknum = JSON.parse(localStorage.getItem('decknum'));
+	mainMenu();
+	return('Storage Cleared.');
 }
