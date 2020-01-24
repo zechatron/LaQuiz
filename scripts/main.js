@@ -11,6 +11,7 @@ const version = "Alpha v0.8";
 var debug = true;
 var MasterStorage = [];
 var cs;
+var colorscheme;
 
 /* [ 
 
@@ -21,31 +22,32 @@ var cs;
 
 */
 
-// KEYBOARD SHORTCUTS FOR MACRONS!!!!!
+// KEYBOARD SHORTCUTS
 document.onkeydown = function(e) {
     var e = e || window.event;
     if (e.altKey && e.which == 65) {
-        $(document.activeElement).val(document.activeElement.value + "\u0101");
+		$(document.activeElement).insertText("\u0101")
         return false;
     }
     if (e.altKey && e.which == 69) {
-        $(document.activeElement).val(document.activeElement.value + "\u0113");
+		$(document.activeElement).insertText("\u0113")
         return false;
     }
     if (e.altKey && e.which == 73) {
-        $(document.activeElement).val(document.activeElement.value + "\u012B");
-        console.log("\u00af");
+		$(document.activeElement).insertText("\u012B")
         return false;
     }
     if (e.altKey && e.which == 79) {
-        $(document.activeElement).val(document.activeElement.value + "\u014D");
-        console.log("\u00af");
+		$(document.activeElement).insertText("\u014D")
+
         return false;
     }
     if (e.altKey && e.which == 85) {
-        $(document.activeElement).val(document.activeElement.value + "\u016B");
-        console.log("\u00af");
+		$(document.activeElement).insertText("\u016B")
         return false;
+    }
+    if (e.which == 13) {
+        $(".enter:eq(0)").click();
     }
 }
 function cls() {
@@ -61,6 +63,9 @@ function hr(attributes) {
     body = document.getElementById("body");
     body.appendChild(h);
 }
+function getBackButton(destinationAsFunc, destinationAsText) {
+    $("body").append($("<button class='button backBtn' onclick='" + destinationAsFunc + "'>Back to " + destinationAsText + "</button>"));
+}
 function getTitle(title) {
     var div = document.createElement("div");
     div.setAttribute("class", "title")
@@ -69,11 +74,7 @@ function getTitle(title) {
     body.appendChild(div);
     // body >> div
 
-    var ele = document.createElement("span");
-    var txt = document.createTextNode(title);
-    ele.appendChild(txt);
-    // <span> {whatever text the variable "text" is} </span>
-    div.appendChild(ele);
+    $(".title").html("<center>" + title + "</center>")
 
 }
 function getContainer(container) {
@@ -150,15 +151,15 @@ function buttonRemove() {
     var button = document.createElement("button");
     button.setAttribute("class", "newWord-remove");
     button.setAttribute("id", "delButton");
-    button.setAttribute('onclick', "delNewWord()");
     var txt = document.createTextNode("Remove");
     button.appendChild(txt);
     div.appendChild(button);
+    $(".newWord-remove").on("click", function() {
+        $(this).parent().parent().remove();
+    });
 
 }
-// fix
-function delNewWord() {
-
+function delNewWord() {/* DON't USE, EVEN MORE BAD CODE 
     var containerbutton = "newWord-Remove";
     var e = document.getElementById(containerbutton);
     e.parentElement.remove(e);
@@ -184,7 +185,7 @@ function getSaveButton() {
     var button = document.createElement("button");
     button.setAttribute("class", "save");
     button.setAttribute('onclick', 'newSave()');
-    var txt = document.createTextNode("Save & Name");
+    var txt = document.createTextNode("Save Deck");
     button.appendChild(txt);
     div.appendChild(button);
 
@@ -219,10 +220,11 @@ function getNameInput(text) {
 function info() {
     a = document.createElement("div");
     a.setAttribute("id", "version");
-    b = document.createTextNode("LaQuiz developed by Zechariah Zhong for the 2020 FJCL Regionals " + version);
+    b = document.createTextNode(version);
     a.appendChild(b);
     body = document.getElementById("body");
     body.appendChild(a);
+    $("#version").html("<center>LaQuiz developed for the 2020 FJCL Regional Forum " + version + " | Tip: Press [ALT]+[A,E,I,O,U] to input macarons.</center>")
 }
 var wordCount = {
     nouns: 0,
@@ -230,7 +232,11 @@ var wordCount = {
 
     id: 0
 }
-
+function getColorScheme() {
+	if(colorscheme = 'default') {
+		$('body').css("background-color", "aqua");
+	}
+}
 function mainMenu() {
     cls();
     getTitle("LaQuiz");
@@ -238,17 +244,53 @@ function mainMenu() {
     getContainer("grid-container");
     getButton("Study Existing Decks", "Existing", "Existing()");
     getButton("New Study Deck", "NewDeck", "NewDeck()");
+	getButton("Settings", "Settings", "settings()");
     info();
 }
 mainMenu();
-
+function settings() {
+	cls();
+	getTitle("Settings")
+	getBackButton("mainMenu()", "Main Menu")
+	info();
+	hr();
+	$("body").append($("<div class='settings-container'></div>"));
+	$(".settings-container").append($("<span class='choose-color'>Color Scheme:</span>"));
+	$(".settings-container").append($("<button class='button scheme-default'>Poseidon (default)</button>"));
+	$(".settings-container").append($("<button class='button scheme-zeus'>Zeus</button>"));
+	$(".settings-container").append($("<button class='button scheme-hera'>Hera</button>"));
+	$(".settings-container").append($("<button class='button scheme-vulcan'>Hephaestus</button>"));
+	
+	$(".scheme-vulcan").on("click", function() {
+		$("body").css("background-color", "#544f4f");
+		colorscheme = "vulcan";
+	})
+		
+	$(".scheme-hera").on("click", function() {
+		$("body").css("background-color", "whitesmoke");
+		colorscheme = "hera";
+	})
+		
+	$(".scheme-default").on("click", function() {
+		$("body").css("background-color", "aqua");
+		colorscheme = "default";
+	})
+		
+	$(".scheme-zeus").on("click", function() {
+		$("body").css("background-color", "#752c75");
+		colorscheme = "zeus";
+	})
+	
+	
+};
 function NewDeck() {
     cls();
     getSaveButton();
+    getBackButton('mainMenu()', "Main Menu");
     getTitle("Create a new study deck");
     hr();
     getContainer("grid-container-2");
-    getButton("New Nown", "Nouns", "newNoun()");
+    getButton("New Noun", "Nouns", "newNoun()");
     getButton("New Verb", "Verbs", "newVerb()");
     getNameInput("Name of this deck");
     info();
@@ -325,8 +367,11 @@ function newSave() {
         verbs: verb.container.length,
 
     }
-
     /////////////////////////////////////////
+	if(total.total == 0) {
+		alert("You can't have an empty deck!");
+		mainMenu();
+	} else {
     MasterStorage.push([[[]], [[]], [[]]])
     decknum++;
     deckdefaultnameid = 1 + decknum;
@@ -358,7 +403,7 @@ function newSave() {
             if (noun.container[0].contains(noun.def[0])) {
                 if (e > 0) {
                     MasterStorage[decknum][1].push([]);
-                }
+                } 
                 MasterStorage[decknum][1][e][0] = noun.def[0].value;
                 MasterStorage[decknum][1][e].push(noun.lat1[0].value);
                 MasterStorage[decknum][1][e].push(noun.lat2[0].value);
@@ -404,19 +449,55 @@ function newSave() {
     alert("'" + MasterStorage[decknum][0] + "' has been saved.")
     cls();
     mainMenu();
+	}
 }
 function Existing() {
     cls();
     info();
+    getBackButton("mainMenu()", "Main Menu");
     getTitle("Deck to Study")
     hr();
 
     getContainer("choose-container");
+
     if (MasterStorage.length == 0) {
         alert("You have no created decks!")
         cls();
         mainMenu();
     } else {
+        delChoose = $("<button class='button choose-delete'>Delete Deck</button>");
+        $("body").append(delChoose);
+        delCancel = $("<button class='button choose-cancel'>Cancel</button>");
+        $("body").append(delCancel);
+        $(".choose-cancel").hide();
+
+        // If the delete button is clicked
+        $(".choose-delete").on("click", function() {
+            $("body").css("background-color", "gray");
+            $(".title-text").html("<span class='delText'>Click on the deck you wish to delete.</span>");
+            $(".choose-delete").hide();
+            $(".choose-button").removeAttr("onclick");
+
+            $(".choose-button").on("click", function() {
+                if (confirm("Are you sure you want to delete '" + MasterStorage[this.id][0] + "'?")) {
+                    alert("'" + MasterStorage[this.id][0] + "' has been deleted.");
+                    MasterStorage.splice(this.id, 1);
+                    decknum--;
+                    $("body").css("background-color", "aqua");
+                    Existing();
+                } else {
+                    $("body").css("background-color", "aqua");
+                    Existing();
+                }
+                ;
+            });
+
+            $(".choose-cancel").show().on("click", function() {
+                $("body").css("background-color", "aqua");
+                Existing();
+            });
+
+        });
         var i;
         for (i = 0; i < MasterStorage.length; i++) {
 
@@ -438,6 +519,7 @@ function Existing() {
 function dashboard() {
     cls()
     info()
+    getBackButton("Existing()", "Study Deck");
     getTitle(MasterStorage[cs][0]);
     hr();
     const body = document.getElementById("body");
@@ -478,6 +560,33 @@ function dashboard() {
     a.appendChild(b);
     preview_container.appendChild(a);
 
+    $("#preview-container").append($("<button class='button deck-edit'>Edit Deck</button>"));
+
+    if (MasterStorage[cs][2][0].length != 0) {
+        for (i = 0; i < MasterStorage[cs][2].length; i++) {
+            a = document.createElement("span");
+            a.setAttribute("class", "prvw-verb-def");
+            b = document.createTextNode(MasterStorage[cs][2][i][0]);
+            a.appendChild(b);
+            preview_container.appendChild(a);
+            a = document.createElement("span");
+            a.setAttribute("class", "prvw-verb-dash");
+            b = document.createTextNode("- ");
+            a.appendChild(b);
+            preview_container.appendChild(a);
+            a = document.createElement("span");
+            a.setAttribute("class", "prvw-verb-main");
+            b = document.createTextNode(MasterStorage[cs][2][i][1] + ", " + MasterStorage[cs][2][i][2] + ", " + MasterStorage[cs][2][i][3] + ", " + MasterStorage[cs][2][i][4]);
+            a.appendChild(b);
+            preview_container.appendChild(a);
+            a = document.createElement("span");
+            a.setAttribute("class", "prvw-verb-der");
+            b = document.createTextNode(MasterStorage[cs][2][i][5]);
+            a.appendChild(b);
+            preview_container.appendChild(a);
+
+        }
+    }
     if (MasterStorage[cs][1][0].length != 0) {
         for (i = 0; i < MasterStorage[cs][1].length; i++) {
 
@@ -510,36 +619,185 @@ function dashboard() {
             preview_container.appendChild(a);
         }
     }
-    if (MasterStorage[cs][2][0].length != 0) {
-        for (i = 0; i < MasterStorage[cs][2].length; i++) {
-            a = document.createElement("span");
-            a.setAttribute("class", "prvw-verb-def");
-            b = document.createTextNode(MasterStorage[cs][2][i][0]);
-            a.appendChild(b);
-            preview_container.appendChild(a);
-            a = document.createElement("span");
-            a.setAttribute("class", "prvw-verb-dash");
-            b = document.createTextNode("- ");
-            a.appendChild(b);
-            preview_container.appendChild(a);
-            a = document.createElement("span");
-            a.setAttribute("class", "prvw-verb-main");
-            b = document.createTextNode(MasterStorage[cs][2][i][1] + ", " + MasterStorage[cs][2][i][2] + ", " + MasterStorage[cs][2][i][3] + ", " + MasterStorage[cs][2][i][4]);
-            a.appendChild(b);
-            preview_container.appendChild(a);
-            a = document.createElement("span");
-            a.setAttribute("class", "prvw-verb-der");
-            b = document.createTextNode(MasterStorage[cs][2][i][5]);
-            a.appendChild(b);
-            preview_container.appendChild(a);
+    $(".deck-edit").on("click", function() {
+        cls()
+        info()
+        getTitle("Edit Deck | " + MasterStorage[cs][0]);
+        hr();
+        $("body").append("<div>")
+        getContainer("grid-container-2");
+        getButton("New Noun", "Nouns", "newNoun()");
+        getButton("New Verb", "Verbs", "newVerb()");
 
+        var editBtn = $("<button class='edit'>Save Changes</button>")
+        $("body").append(editBtn);
+	    getNameInput("");
+		$(".newName").val(MasterStorage[cs][0]);
+        if (MasterStorage[cs][2][0].length != 0) {
+            for (i = 0; i < MasterStorage[cs][2].length; i++) {
+                wordCount.id++;
+                getContainerVerb("grid-container-newWord");
+                getWordText("Verb Definition", "newVerb-Def");
+                $(".newVerb-Def").last().val(MasterStorage[cs][2][i][0]);
+                getWordNormalText("-", "newVerb-Dash");
+                getWordText("1st Principal Part", "newVerb-1");
+                $(".newVerb-1").last().val(MasterStorage[cs][2][i][1]);
+                getWordText("2nd Principal Part", "newVerb-2");
+                $(".newVerb-2").last().val(MasterStorage[cs][2][i][2]);
+                getWordText("3rd Principal Part", "newVerb-3");
+                $(".newVerb-3").last().val(MasterStorage[cs][2][i][3]);
+                getWordText("4th Principal Part", "newVerb-4");
+                $(".newVerb-4").last().val(MasterStorage[cs][2][i][4]);
+                getWordText("Derivative", "newVerb-Der");
+                $(".newVerb-Der").last().val(MasterStorage[cs][2][i][5]);
+                buttonRemove();
+            }
         }
-    }
+        if (MasterStorage[cs][1][0].length != 0) {
+            for (i = 0; i < MasterStorage[cs][1].length; i++) {
+                wordCount.id++;
+                getContainerNoun("grid-container-newWord");
+                getWordText("Noun Definition", "newNoun-Def");
+                $(".newNoun-Def").last().val(MasterStorage[cs][1][i][0]);
+                getWordNormalText("-", "newVerb-Dash");
+                getWordText("Singular Subject", "newNoun-1");
+                $(".newNoun-1").last().val(MasterStorage[cs][1][i][1]);
+                getWordText("Singular Possessive", "newNoun-2");
+                $(".newNoun-2").last().val(MasterStorage[cs][1][i][2]);
+                getWordText("Gender", "newNoun-Gen");
+                $(".newNoun-Gen").last().val(MasterStorage[cs][1][i][3]);
+                getWordText("Declension", "newNoun-Decl");
+                $(".newNoun-Decl").last().val(MasterStorage[cs][1][i][4]);
+                getWordText("Derivative", "newNoun-Der");
+                $(".newNoun-Der").last().val(MasterStorage[cs][1][i][5]);
+                buttonRemove();
+            }
+        }
+        $(".edit").on("click", function() {
+			
+			
+			
+			
+			// LET THE -SAVE- BEGIN!
+            var noun = {
+                container: document.getElementsByClassName("noun"),
+                def: document.getElementsByClassName("newNoun-Def"),
+                lat1: document.getElementsByClassName("newNoun-1"),
+                lat2: document.getElementsByClassName("newNoun-2"),
+                gen: document.getElementsByClassName("newNoun-Gen"),
+                decl: document.getElementsByClassName("newNoun-Decl"),
+                der: document.getElementsByClassName("newNoun-Der")
+            }
+            var verb = {
+                container: document.getElementsByClassName("verb"),
+                def: document.getElementsByClassName("newVerb-Def"),
+                lat1: document.getElementsByClassName("newVerb-1"),
+                lat2: document.getElementsByClassName("newVerb-2"),
+                lat3: document.getElementsByClassName("newVerb-3"),
+                lat4: document.getElementsByClassName("newVerb-4"),
+                der: document.getElementsByClassName("newVerb-Der"),
+
+            }
+            var total = {
+                total: noun.container.length + verb.container.length,
+                nouns: noun.container.length,
+                verbs: verb.container.length,
+
+            }
+
+            /////////////////////////////////////////
+            name = document.getElementById("name").value;
+			MasterStorage[cs] = [[[]], [[]], [[]]]
+            MasterStorage[cs][0] = name;
+			
+            // saving nouns
+            if (body.contains(noun.container[0])) {
+                i = total.nouns;
+				console.log(i)
+				console.log(noun.container.length);
+				console.log(verb);
+                e = -1;
+
+                while (body.contains(noun.container[0])) {
+                    i = i - 1;
+                    e++;
+
+                    if (noun.container[0].contains(noun.def[0])) {
+                        if (e > 0) {
+                            MasterStorage[cs][1].push([]);
+                        }
+                        MasterStorage[cs][1][e][0] = noun.def[0].value;
+                        MasterStorage[cs][1][e].push(noun.lat1[0].value);
+                        MasterStorage[cs][1][e].push(noun.lat2[0].value);
+                        MasterStorage[cs][1][e].push(noun.gen[0].value);
+                        MasterStorage[cs][1][e].push(noun.decl[0].value);
+                        MasterStorage[cs][1][e].push(noun.der[0].value);
+                        body.removeChild(noun.container[0]);
+
+                    } else {
+                        console.warn("doent work");
+                    }
+                }
+
+                // saving verbs
+            }
+            if (body.contains(verb.container[0])) {
+                i = total.verbs;
+                e = -1;
+
+                while (body.contains(verb.container[0])) {
+                    i = i - 1;
+                    e++;
+
+                    if (verb.container[0].contains(verb.def[0])) {
+                        if (e > 0) {
+                            MasterStorage[cs][2].push([]);
+                        }
+                        MasterStorage[cs][2][e][0] = verb.def[0].value;
+                        MasterStorage[cs][2][e].push(verb.lat1[0].value);
+                        MasterStorage[cs][2][e].push(verb.lat2[0].value);
+                        MasterStorage[cs][2][e].push(verb.lat3[0].value);
+                        MasterStorage[cs][2][e].push(verb.lat4[0].value);
+                        MasterStorage[cs][2][e].push(verb.der[0].value);
+                        body.removeChild(verb.container[0]);
+
+                    } else {
+                        console.error("/NULL/");
+                    }
+                }
+            }
+            alert("'" + MasterStorage[cs][0] + "' has been saved.")
+            cls();
+            mainMenu();
+        });
+    });
+
+
+
+
+
+
+
+
     // write()
     document.getElementsByClassName("write")[0].onclick = function() {
 
         let currentnum = 1;
-        let shuffledWrite = deckShuffle(MasterStorage[cs][1].concat(MasterStorage[cs][2]));
+        function testForNouns() {
+            if (MasterStorage[cs][1][0].length == 0) {
+                return ([]);
+            } else {
+                return (MasterStorage[cs][1])
+            }
+        }
+        function testForVerbs() {
+            if (MasterStorage[cs][2][0].length == 0) {
+                return ([]);
+            } else {
+                return (MasterStorage[cs][2])
+            }
+        }
+        let shuffledWrite = deckShuffle(testForNouns().concat(testForVerbs()));
         dataWrite = {
             right: 0,
             wrong: 0,
@@ -554,17 +812,19 @@ function dashboard() {
                 latin = shuffledWrite[currentnum - 1][1] + " " + shuffledWrite[currentnum - 1][2] + " " + shuffledWrite[currentnum - 1][3] + " " + shuffledWrite[currentnum - 1][4] + " || " + shuffledWrite[currentnum - 1][5] + " ";
                 cls();
                 info();
+                getBackButton("dashboard()", MasterStorage[cs][0]);
                 getTitle(MasterStorage[cs][0] + " | Write");
                 hr();
 
                 $('body').append($("<div class='write-container'></div>"));
                 $('.write-container').append($("<div class='write-wrapper'></div>"));
-                $('.write-wrapper').append($("<button class='button check-answers'>Check Answers</button>"));
+                $('.write-wrapper').append($("<button class='button check-answers enter'>Check Answers</button>"));
                 $('.write-wrapper').append($("<div class='write-input input'></div>"));
 
                 $('.write-wrapper').append($("<div class='outof'>" + currentnum + "/" + shuffledWrite.length + "</div>"));
 
                 $(".write-input").html('<input class="input fillblank-input"></input>' + ' - ' + latin);
+                $(".fillblank-input").focus();
             }
             $(".check-answers").on("click", function() {
                 if (currentnum - 1 != shuffledWrite.length) {
@@ -579,7 +839,6 @@ function dashboard() {
                         $(".check-answers").html("Continue (Or press any button)");
                         $(".check-answers").on("click", function() {
                             write();
-
                         });
                     } else {
                         // Incorrect
@@ -588,10 +847,9 @@ function dashboard() {
                         $(".fillblank-input").attr("placeholder", shuffledWrite[currentnum - 1][0]);
                         $("input").css("fontSize", "medium");
                         $(".fillblank-input").val("");
-
-                        $(".check-answers").hide();
-                        $('.write-wrapper').append($("<button class='button check'>Check Answer</button>"));
-
+                        $('.check-answers').removeClass("enter");
+                        $('.write-wrapper').append($("<button class='button check enter'>Check Answer</button>"));
+                        $(".input").focus();
                         $(".check").on("click", function() {
                             if ($(".fillblank-input").val() == shuffledWrite[currentnum - 1][0]) {
 
@@ -608,13 +866,13 @@ function dashboard() {
 
                                     $('body').append($("<div class='write-container'></div>"));
                                     $('.write-container').append($("<div class='write-wrapper'></div>"));
-                                    $('.write-wrapper').append($("<button class='button check-answers'></button>"));
+                                    $('.write-wrapper').append($("<button class='button check-answers enter'></button>"));
                                     $('.write-wrapper').append($("<div class='write-input input'></div>"));
-									$(".write-input").css("padding-top", 35);
-									$(".check-answers").html("Back to " + MasterStorage[cs][0]);
-									
-									$(".check-answers").attr("onclick", "dashboard()");
-									
+                                    $(".write-input").css("padding-top", 35);
+                                    $(".check-answers").html("Back to " + MasterStorage[cs][0]);
+
+                                    $(".check-answers").attr("onclick", "dashboard()");
+
                                     var default_msg = "Out of the " + shuffledWrite.length + " terms you studied, you got <strong><font color='green'>" + dataWrite.right + " correct</font></strong>, and <strong><font color='red'>" + dataWrite.wrong + " wrong</font></strong>."
                                     if (dataWrite.right == 0) {
                                         $(".write-input").html(default_msg + "</br> You got some work to do, don't give up!");
@@ -650,13 +908,13 @@ function dashboard() {
 
                     $('body').append($("<div class='write-container'></div>"));
                     $('.write-container').append($("<div class='write-wrapper'></div>"));
-                    $('.write-wrapper').append($("<button class='button check-answers'></button>"));
+                    $('.write-wrapper').append($("<button class='button check-answers enter'></button>"));
                     $('.write-wrapper').append($("<div class='write-input input'></div>"));
-					$(".write-input").css("padding-top", 35);
-					$(".check-answers").html("Back to " + MasterStorage[cs][0]);
-					
-					$(".check-answers").attr("onclick", "dashboard()");
-					
+                    $(".write-input").css("padding-top", 35);
+                    $(".check-answers").html("Back to " + MasterStorage[cs][0]);
+
+                    $(".check-answers").attr("onclick", "dashboard()");
+
                     var default_msg = "Out of the " + shuffledWrite.length + " terms you studied, you got <strong><font color='green'>" + dataWrite.right + " correct</font></strong>, and <strong><font color='red'>" + dataWrite.wrong + " wrong</font></strong>."
                     if (dataWrite.right == 0) {
                         $(".write-input").html(default_msg + "</br> You got some work to do, don't give up!");
@@ -677,11 +935,35 @@ function dashboard() {
     }
     // flashcards() 
     document.getElementsByClassName("flashcards")[0].onclick = function() {
+		function testfor_der() {
+			if(shuffledFlashcards[currentnum-1][5] != "") {
+				console.log("YES");
+				return(" | Derivatives: " + shuffledFlashcards[currentnum - 1][5]);
+			} else {
+				return("");
+			}
+		}
+        function testForNouns() {
+            if (MasterStorage[cs][1][0].length == 0) {
+                return ([]);
+            } else {
+                return (MasterStorage[cs][1])
+            }
+        }
+        function testForVerbs() {
+            if (MasterStorage[cs][2][0].length == 0) {
+                return ([]);
+            } else {
+                return (MasterStorage[cs][2])
+            }
+        }
         cls();
         info();
+        getBackButton("dashboard()", MasterStorage[cs][0]);
         getTitle(MasterStorage[cs][0] + " | Flashcards");
         hr();
-        shuffledFlashcards = deckShuffle(MasterStorage[cs][1].concat(MasterStorage[cs][2]));
+        shuffledFlashcards = deckShuffle(testForNouns().concat(testForVerbs()));
+		
 
         currentnum = 1;
 
@@ -699,7 +981,7 @@ function dashboard() {
         // Flashcard front
         $("#flashcard-container").append($("<div class='fc-front flashcard front id='fc-front'></div>").text(shuffledFlashcards[0][0]));
         // back
-        $("#flashcard-container").append($("<div class='fc-back flashcard back id='fc-back'></div>").text(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + " | Derivatives: " + shuffledFlashcards[currentnum - 1][5]));
+        $("#flashcard-container").append($("<div class='fc-back flashcard back id='fc-back'></div>").text(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + testfor_der()));
 
         $("#flashcard-container").flip({
             axis: 'x'
@@ -728,12 +1010,6 @@ function dashboard() {
         fc_container.appendChild(a);
         fc = document.getElementById("flashcard-inside");
         // Finish button
-        a = document.createElement("button");
-        a.setAttribute("class", "finish-btn button");
-        a.setAttribute("id", "finish");
-        b = document.createTextNode("Finish");
-        a.appendChild(b);
-        fc_container.appendChild(a);
         // Next(); 
         $(".back-btn").hide();
         $(".finish-btn").hide();
@@ -747,17 +1023,18 @@ function dashboard() {
                     $(".flashcard-container").flip(false);
                     setTimeout(function() {
                         $(".front").html(shuffledFlashcards[currentnum - 1][0]);
-                        $(".back").html(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + " | Derivatives: " + shuffledFlashcards[currentnum - 1][5])
+                        $(".back").html(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + testfor_der())
                     }, 200);
                 } else {
                     $(".front").html(shuffledFlashcards[currentnum - 1][0]);
-                    $(".back").html(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + " | Derivatives: " + shuffledFlashcards[currentnum - 1][5])
+                    $(".back").html(shuffledFlashcards[currentnum - 1][1] + " " + shuffledFlashcards[currentnum - 1][2] + " " + shuffledFlashcards[currentnum - 1][3] + " " + shuffledFlashcards[currentnum - 1][4] + testfor_der())
                 }
                 $("#counter").html(currentnum + "/" + shuffledFlashcards.length);
 
                 if (shuffledFlashcards.length == currentnum) {
                     $(".next-btn").hide();
-                    $(".finish-btn").show();
+					$('#flashcard-container').append($("<button onclick='dashboard()' class='finish-btn button' id='finish'>Finish</button>"))
+
                 }
                 if (currentnum < shuffledFlashcards.length) {
                     $(".next-btn").show();
@@ -770,6 +1047,7 @@ function dashboard() {
                 }
             }
         });
+		
         $(".back-btn").on("click", function() {
             if (currentnum != 1) {
                 currentnum--;
@@ -800,9 +1078,7 @@ function dashboard() {
                 }
             }
         });
-        $(".finish-btn").on("click", function() {
-            dashboard();
-        });
+
 
     }
 }

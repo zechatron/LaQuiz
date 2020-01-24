@@ -4,13 +4,36 @@
   color: gray;
   position: absolute;
   top: 0px;
-  right: 35%;
+  right: 29%;  
 }
 .body {
-   background-color: #F8F8F8;
    background-color: aqua;
    padding: 10px;
 
+}
+.button {
+    border: none;
+    width:100%;
+	height: 40px;
+	background-color: #8dffe6;
+    display: block;
+    font-size: auto;
+    text-align: center;
+    font-family: Verdana;
+}
+.button:hover {
+  transition: 100ms;
+  background-color: rgba(140, 169, 177, 0.8);
+}
+.button:active {
+  background-color: gray;
+  border: 1px solid black;
+}
+.title {
+  background-color: rgba(160, 205, 236, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
 }
 input {
   border: none;
@@ -25,13 +48,6 @@ input:focus {
   background-color: rgba(231, 218, 218, 0.8)
 }
 
-.title {
-  background-color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding: 20px 0;
-  font-size: 30px;
-  font-family: arial;
-}
 .grid-container-2 { 
   display: grid;
   grid-gap: 50px;	
@@ -65,6 +81,7 @@ input:focus {
   text-align: center;
 }
 
+
 .save {
   border: none;
   position: fixed;
@@ -72,15 +89,29 @@ input:focus {
   right: 0;
   width: 200px;
   height: 50px;
-  background-color: lime;
+  background-color: #019401;
   border: 1px  black;
 }
 .save:hover {
   transition: 100ms;
-  background-color: limegreen;
+  background-color: #15c315;
 }
 .save:active {
   border: 1px solid black;
+}
+.edit {
+  border: none;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 50px;
+  background-color: #ffc600;
+  border: 1px  black;
+}
+edit:hover {
+  transition: 100ms;
+  background-color: #ffc548;
 }
 .newName {
   position: fixed;
@@ -198,23 +229,16 @@ input:focus {
 .title {
   font-family: arial;
 }
-.button {
-    border: none;
-    width:100%;
-	height: 40px;
-	background-color: rgba(241, 241, 241, 0.8);
-    display: block;
-    font-size: auto;
-    text-align: center;
-    font-family: Verdana;
+.backBtn {
+  position: absolute;
+  top: 6%;
+  background-color: #b3b3b3;
+  left: 3%;
+  width: 10%;
 }
-.button:hover {
+.backBtn:hover {
   transition: 100ms;
-  background-color: rgba(140, 169, 177, 0.8);
-}
-.button:active {
-  background-color: gray;
-  border: 1px solid black;
+  background-color: #696969;
 }
 .NewDeck {
   grid-column-start: 3;
@@ -234,6 +258,56 @@ input:focus {
   font-size: 30px;
   text-align: center;
 }
+.Settings {
+  grid-column-start: 4;
+  grid-column-end: 6;
+  border: none;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+.settings-container {
+  display: grid;
+  margin-top: 50px;
+  grid-gap: 10px;
+  grid-template-columns: 15% 15% 15% 15% 15% 15%;
+  
+} 
+.scheme-default {
+	background-color: #177bf9;
+    border: 2px solid #a7f1eecc; 
+}
+.scheme-default:hover {
+    background-color: #1164a9;
+}
+.scheme-zeus {
+	background-color: gold;
+    border: 2px solid purple;
+}
+.scheme-zeus:hover {
+	background-color: goldenrod;
+
+}
+.scheme-hera {
+	background-color: white;
+	border: 2px solid gold;
+}
+.scheme-hera:hover {
+  background-color: #dcdcdc;
+}
+.scheme-vulcan {
+	background-color: #b90505;
+	border: 2px solid gray;
+}
+.scheme-vulcan:hover {
+  background-color: #922424;
+}
+.choose-color {
+  grid-column-start: 2;
+  font-size: 25px;
+  font-family: arial;
+  font-style: italic;
+}
 .choose-container {
   align: center;
   display: grid;
@@ -246,6 +320,42 @@ input:focus {
 }
 .choose-button:hover {
   border: 1px solid black;
+}
+.choose-delete {
+  text-align: center;
+  word-wrap: break-word;
+  position: absolute;
+  width: 6%;
+  background-color: #b90071;
+  right: 2%;
+  bottom: 2%;
+}
+.choose-delete:hover {
+  transition: 100ms;
+  box-shadow: 0px 0px 156px 3px;
+  background-color: #f153b4;
+}
+.choose-cancel {
+  text-align: center;
+  word-wrap: break-word;
+  position: absolute;
+  width: 6%;
+  background-color: #b90071;
+  right: 2%;
+  bottom: 2%;
+
+}
+.choose-cancel:hover {
+  transition: 100ms;
+  box-shadow: 0px 0px 156px 3px;
+  background-color: #f153b4;
+}
+.delText {
+
+  font-size: 48px;
+  font-family: arial;
+  color: #575757;
+
 }
 hr {
   border: 1px solid #673737;
@@ -267,6 +377,7 @@ hr {
   margin-top: 7%
 }
 .waystostudy {
+  font-family: arial;
   position: absolute;
   left: 10%;
   grid-column-start: 1;
@@ -296,6 +407,18 @@ hr {
   left: 10%;
   grid-column-start: 1;
   font-size: 30px;
+  font-family: sans-serif;
+}
+.deck-edit {
+  margin-left: -25%;
+  margin-top: 15%;
+  font-family: arial;
+  left: 10%;
+  width: 25%;
+  height: 30px;
+  grid-column-start: 1;
+  grid-row-start
+  font-size: 25%x;
   font-family: sans-serif;
 }
 .prvw-noun-def {
