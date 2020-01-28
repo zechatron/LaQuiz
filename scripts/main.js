@@ -11,7 +11,7 @@ const version = "Alpha v0.8";
 var debug = true;
 var MasterStorage = [];
 var cs;
-var colorscheme;
+var colorscheme = "default";
 
 /* [ 
 
@@ -26,24 +26,24 @@ var colorscheme;
 document.onkeydown = function(e) {
     var e = e || window.event;
     if (e.altKey && e.which == 65) {
-		$(document.activeElement).insertText("\u0101")
+        $(document.activeElement).insertText("\u0101")
         return false;
     }
     if (e.altKey && e.which == 69) {
-		$(document.activeElement).insertText("\u0113")
+        $(document.activeElement).insertText("\u0113")
         return false;
     }
     if (e.altKey && e.which == 73) {
-		$(document.activeElement).insertText("\u012B")
+        $(document.activeElement).insertText("\u012B")
         return false;
     }
     if (e.altKey && e.which == 79) {
-		$(document.activeElement).insertText("\u014D")
+        $(document.activeElement).insertText("\u014D")
 
         return false;
     }
     if (e.altKey && e.which == 85) {
-		$(document.activeElement).insertText("\u016B")
+        $(document.activeElement).insertText("\u016B")
         return false;
     }
     if (e.which == 13) {
@@ -233,9 +233,19 @@ var wordCount = {
     id: 0
 }
 function getColorScheme() {
-	if(colorscheme = 'default') {
-		$('body').css("background-color", "aqua");
-	}
+    if (colorscheme == 'default') {
+        $('body').css("background-color", "aqua");
+        $('.button').css({
+            "backgroundColor": "#a5ffe1"
+
+        })
+    } else if (colorscheme == 'vulcan') {
+        $('body').css("background-color", "gray");
+        $('.button').css({
+            "backgroundColor": "darkred"
+
+        })
+    }
 }
 function mainMenu() {
     cls();
@@ -244,46 +254,45 @@ function mainMenu() {
     getContainer("grid-container");
     getButton("Study Existing Decks", "Existing", "Existing()");
     getButton("New Study Deck", "NewDeck", "NewDeck()");
-	getButton("Settings", "Settings", "settings()");
+    getButton("Settings", "Settings", "settings()");
     info();
 }
 mainMenu();
 function settings() {
-	cls();
-	getTitle("Settings")
-	getBackButton("mainMenu()", "Main Menu")
-	info();
-	hr();
-	$("body").append($("<div class='settings-container'></div>"));
-	$(".settings-container").append($("<span class='choose-color'>Color Scheme:</span>"));
-	$(".settings-container").append($("<button class='button scheme-default'>Poseidon (default)</button>"));
-	$(".settings-container").append($("<button class='button scheme-zeus'>Zeus</button>"));
-	$(".settings-container").append($("<button class='button scheme-hera'>Hera</button>"));
-	$(".settings-container").append($("<button class='button scheme-vulcan'>Hephaestus</button>"));
-	
-	$(".scheme-vulcan").on("click", function() {
-		$("body").css("background-color", "#544f4f");
-		colorscheme = "vulcan";
-	})
-		
-	$(".scheme-hera").on("click", function() {
-		$("body").css("background-color", "whitesmoke");
-		colorscheme = "hera";
-	})
-		
-	$(".scheme-default").on("click", function() {
-		$("body").css("background-color", "aqua");
-		colorscheme = "default";
-	})
-		
-	$(".scheme-zeus").on("click", function() {
-		$("body").css("background-color", "#752c75");
-		colorscheme = "zeus";
-	})
-	
-	
-};
-function NewDeck() {
+    cls();
+    getTitle("Settings")
+    getBackButton("mainMenu()", "Main Menu")
+    info();
+    hr();
+    $("body").append($("<div class='settings-container'></div>"));
+    $(".settings-container").append($("<span class='choose-color'>Color Scheme:</span>"));
+    $(".settings-container").append($("<button class='button scheme-default'>Poseidon (default)</button>"));
+    $(".settings-container").append($("<button class='button scheme-zeus'>Zeus</button>"));
+    $(".settings-container").append($("<button class='button scheme-hera'>Hera</button>"));
+    $(".settings-container").append($("<button class='button scheme-vulcan'>Hephaestus</button>"));
+
+    $(".scheme-vulcan").on("click", function() {
+        $("body").css("background-color", "#544f4f");
+        colorscheme = "vulcan";
+    })
+
+    $(".scheme-hera").on("click", function() {
+        $("body").css("background-color", "whitesmoke");
+        colorscheme = "hera";
+    })
+
+    $(".scheme-default").on("click", function() {
+        $("body").css("background-color", "aqua");
+        colorscheme = "default";
+    })
+
+    $(".scheme-zeus").on("click", function() {
+        $("body").css("background-color", "#752c75");
+        colorscheme = "zeus";
+    })
+
+}
+;function NewDeck() {
     cls();
     getSaveButton();
     getBackButton('mainMenu()', "Main Menu");
@@ -368,88 +377,88 @@ function newSave() {
 
     }
     /////////////////////////////////////////
-	if(total.total == 0) {
-		alert("You can't have an empty deck!");
-		mainMenu();
-	} else {
-    MasterStorage.push([[[]], [[]], [[]]])
-    decknum++;
-    deckdefaultnameid = 1 + decknum;
-    body = document.getElementById("body");
-    //    debug == 1 && console.warn("[DEBUG] Variables defined; Attempting to save.");
-    name = document.getElementById("name").value;
-    if (name == "") {
-        name = "New Deck " + deckdefaultnameid;
-    }
-    debug == 1 && console.log("[DEBUG] Name: " + name);
-    MasterStorage[decknum][0] = name;
-    // Check for noun -> IFYES --> SAVE NOUN -> DELETE NOUN ELEMENT | IFNO --> Check for verb 
+    if (total.total == 0) {
+        alert("You can't have an empty deck!");
+        mainMenu();
+    } else {
+        MasterStorage.push([[[]], [[]], [[]]])
+        decknum++;
+        deckdefaultnameid = 1 + decknum;
+        body = document.getElementById("body");
+        //    debug == 1 && console.warn("[DEBUG] Variables defined; Attempting to save.");
+        name = document.getElementById("name").value;
+        if (name == "") {
+            name = "New Deck " + deckdefaultnameid;
+        }
+        debug == 1 && console.log("[DEBUG] Name: " + name);
+        MasterStorage[decknum][0] = name;
+        // Check for noun -> IFYES --> SAVE NOUN -> DELETE NOUN ELEMENT | IFNO --> Check for verb 
 
-    /*  debug == 1 && console.log("[DEBUG] Total Words: " + total.total);
+        /*  debug == 1 && console.log("[DEBUG] Total Words: " + total.total);
     debug == 1 && console.log("[DEBUG] Total Number of Nouns: " + total.nouns);
     debug == 1 && console.log("[DEBUG] Total Number of Verbs: " + total.verbs);
 */
-    // saving nouns
-    if (body.contains(noun.container[0])) {
-        i = total.nouns;
-        e = -1;
-        /*      debug == 1 && console.log("[DEBUG] Nouns Detected");
+        // saving nouns
+        if (body.contains(noun.container[0])) {
+            i = total.nouns;
+            e = -1;
+            /*      debug == 1 && console.log("[DEBUG] Nouns Detected");
           debug == 1 && console.log("[DEBUG] Saving Nouns...");
 */
-        while (body.contains(noun.container[0])) {
-            i = i - 1;
-            e++;
+            while (body.contains(noun.container[0])) {
+                i = i - 1;
+                e++;
 
-            if (noun.container[0].contains(noun.def[0])) {
-                if (e > 0) {
-                    MasterStorage[decknum][1].push([]);
-                } 
-                MasterStorage[decknum][1][e][0] = noun.def[0].value;
-                MasterStorage[decknum][1][e].push(noun.lat1[0].value);
-                MasterStorage[decknum][1][e].push(noun.lat2[0].value);
-                MasterStorage[decknum][1][e].push(noun.gen[0].value);
-                MasterStorage[decknum][1][e].push(noun.decl[0].value);
-                MasterStorage[decknum][1][e].push(noun.der[0].value);
-                body.removeChild(noun.container[0]);
+                if (noun.container[0].contains(noun.def[0])) {
+                    if (e > 0) {
+                        MasterStorage[decknum][1].push([]);
+                    }
+                    MasterStorage[decknum][1][e][0] = noun.def[0].value;
+                    MasterStorage[decknum][1][e].push(noun.lat1[0].value);
+                    MasterStorage[decknum][1][e].push(noun.lat2[0].value);
+                    MasterStorage[decknum][1][e].push(noun.gen[0].value);
+                    MasterStorage[decknum][1][e].push(noun.decl[0].value);
+                    MasterStorage[decknum][1][e].push(noun.der[0].value);
+                    body.removeChild(noun.container[0]);
 
-            } else {
-                console.warn("doent work");
+                } else {
+                    console.warn("doent work");
+                }
             }
-        }
 
-        // saving verbs
-    }
-    if (body.contains(verb.container[0])) {
-        i = total.verbs;
-        e = -1;
-        /*      debug == 1 && console.log("[DEBUG] Verbs Detected");
+            // saving verbs
+        }
+        if (body.contains(verb.container[0])) {
+            i = total.verbs;
+            e = -1;
+            /*      debug == 1 && console.log("[DEBUG] Verbs Detected");
           debug == 1 && console.log("[DEBUG] Saving Verbs...");
     */
-        while (body.contains(verb.container[0])) {
-            i = i - 1;
-            e++;
+            while (body.contains(verb.container[0])) {
+                i = i - 1;
+                e++;
 
-            if (verb.container[0].contains(verb.def[0])) {
-                if (e > 0) {
-                    MasterStorage[decknum][2].push([]);
+                if (verb.container[0].contains(verb.def[0])) {
+                    if (e > 0) {
+                        MasterStorage[decknum][2].push([]);
+                    }
+                    MasterStorage[decknum][2][e][0] = verb.def[0].value;
+                    MasterStorage[decknum][2][e].push(verb.lat1[0].value);
+                    MasterStorage[decknum][2][e].push(verb.lat2[0].value);
+                    MasterStorage[decknum][2][e].push(verb.lat3[0].value);
+                    MasterStorage[decknum][2][e].push(verb.lat4[0].value);
+                    MasterStorage[decknum][2][e].push(verb.der[0].value);
+                    body.removeChild(verb.container[0]);
+
+                } else {
+                    console.error("/NULL/");
                 }
-                MasterStorage[decknum][2][e][0] = verb.def[0].value;
-                MasterStorage[decknum][2][e].push(verb.lat1[0].value);
-                MasterStorage[decknum][2][e].push(verb.lat2[0].value);
-                MasterStorage[decknum][2][e].push(verb.lat3[0].value);
-                MasterStorage[decknum][2][e].push(verb.lat4[0].value);
-                MasterStorage[decknum][2][e].push(verb.der[0].value);
-                body.removeChild(verb.container[0]);
-
-            } else {
-                console.error("/NULL/");
             }
         }
+        alert("'" + MasterStorage[decknum][0] + "' has been saved.")
+        cls();
+        mainMenu();
     }
-    alert("'" + MasterStorage[decknum][0] + "' has been saved.")
-    cls();
-    mainMenu();
-	}
 }
 function Existing() {
     cls();
@@ -460,61 +469,138 @@ function Existing() {
 
     getContainer("choose-container");
 
-    if (MasterStorage.length == 0) {
-        alert("You have no created decks!")
-        cls();
-        mainMenu();
-    } else {
-        delChoose = $("<button class='button choose-delete'>Delete Deck</button>");
-        $("body").append(delChoose);
-        delCancel = $("<button class='button choose-cancel'>Cancel</button>");
-        $("body").append(delCancel);
-        $(".choose-cancel").hide();
+    delChoose = $("<button class='button choose-delete'>Delete Deck</button>");
+    $("body").append(delChoose);
+    delCancel = $("<button class='button choose-cancel'>Cancel</button>");
+    $("body").append(delCancel);
+    $(".choose-cancel").hide();
 
-        // If the delete button is clicked
-        $(".choose-delete").on("click", function() {
-            $("body").css("background-color", "gray");
-            $(".title-text").html("<span class='delText'>Click on the deck you wish to delete.</span>");
-            $(".choose-delete").hide();
-            $(".choose-button").removeAttr("onclick");
+    // If the delete button is clicked
+    $(".choose-delete").on("click", function() {
+        $("body").css("background-color", "gray");
+        $(".title").html("Click on the deck you wish to delete");
+        $(".choose-delete").hide();
+        $(".choose-button").removeAttr("onclick");
 
-            $(".choose-button").on("click", function() {
-                if (confirm("Are you sure you want to delete '" + MasterStorage[this.id][0] + "'?")) {
-                    alert("'" + MasterStorage[this.id][0] + "' has been deleted.");
-                    MasterStorage.splice(this.id, 1);
-                    decknum--;
-                    $("body").css("background-color", "aqua");
-                    Existing();
-                } else {
-                    $("body").css("background-color", "aqua");
-                    Existing();
-                }
-                ;
-            });
-
-            $(".choose-cancel").show().on("click", function() {
+        $(".choose-button").on("click", function() {
+            if (confirm("Are you sure you want to delete '" + MasterStorage[this.id][0] + "'?")) {
+                alert("'" + MasterStorage[this.id][0] + "' has been deleted.");
+                MasterStorage.splice(this.id, 1);
+                decknum--;
                 $("body").css("background-color", "aqua");
                 Existing();
-            });
+            } else {
+                $("body").css("background-color", "aqua");
+                Existing();
+            }
+            ;
+        });
+
+        $(".choose-cancel").show().on("click", function() {
+            $("body").css("background-color", "aqua");
+            Existing();
+        });
+
+    });
+
+    $("body").append($("<button class='button deckImport'>Import Deck</button>"));
+    $("body").append($("<textarea class='input inputImport' placeholder='Paste JSON deck in here.'></textarea>"));
+    $(".inputImport").hide();
+    $("body").append($("<button class='buttonImport button'>Import</button>"))
+    $(".buttonImport").hide();
+    $("body").append($("<button class='button deckExport'>Export Deck</button>"));
+    $("body").append($("<textarea class='input inputExport'></textarea>"));
+    $(".inputExport").hide();
+
+    $(".deckImport").on("click", function() {
+        Existing();
+        $(".buttonImport").show();
+        $(".choose-button").removeAttr("onclick");
+        $("body").css("background-color", "darkgreen");
+        $(".title").html("Import deck");
+        $(".inputImport").show();
+        $(".buttonImport").on("click", function() {
+            function isValidJSON(str) {
+                try {
+                    JSON.parse(str);
+                } catch (e) {
+                    return false;
+                }
+                return true
+            }
+            input = $(".inputImport").val();
+            if (isValidJSON($(".inputImport").val())) {
+                try {
+                    var temp = JSON.parse(input);
+                    if (temp[1].length >= 1 || temp[2].length >= 1) {
+                        decknum++;
+                        MasterStorage.push(temp);
+                        getColorScheme();
+                        Existing();
+                        alert(temp[0] + " has been imported.");
+
+                    } else {
+                        alert("Error: Invalid JSON deck.");
+                    }
+                } catch (e) {
+                    alert("Error: Invalid JSON deck.");
+                }
+            } else {
+                alert("Error: Could not read deck.");
+
+            }
+
+        })
+        $(".deckImport").html("Cancel");
+        $(".deckImport").addClass("deckImport-cancel");
+        $(".deckImport").removeClass("deckImport");
+        $(".deckImport-cancel").click(function() {
+            getColorScheme();
+            Existing()
 
         });
-        var i;
-        for (i = 0; i < MasterStorage.length; i++) {
+    })
+    $(".deckExport").on("click", function() {
+        Existing();
+        $(".choose-button").removeAttr("onclick");
+        $("body").css("background-color", "#7f4646");
+        $(".title").html("Click on the deck you wish export");
 
-            var div = document.createElement("div");
-            div.setAttribute("class", "btn");
-            var container = document.getElementById("grid-container");
-            container.appendChild(div);
-            var button = document.createElement("button");
-            button.setAttribute('id', i);
-            button.setAttribute("class", "choose-button button");
-            button.setAttribute('onclick', "cs = this.id; dashboard()");
+        $(".choose-button").on("click", function() {
 
-            var txt = document.createTextNode(MasterStorage[i][0]);
-            button.appendChild(txt);
-            div.appendChild(button);
-        }
+            $(".inputExport").show();
+            $(".inputExport").val(JSON.stringify(MasterStorage[this.id]))
+
+        });
+
+        $(".deckExport").html("Cancel");
+        $(".deckExport").addClass("deckExport-cancel");
+        $(".deckImport").removeClass("deckExport");
+        $(".deckExport-cancel").click(function() {
+            getColorScheme();
+            Existing()
+
+        });
+
+    })
+
+    var i;
+    for (i = 0; i < MasterStorage.length; i++) {
+
+        var div = document.createElement("div");
+        div.setAttribute("class", "btn");
+        var container = document.getElementById("grid-container");
+        container.appendChild(div);
+        var button = document.createElement("button");
+        button.setAttribute('id', i);
+        button.setAttribute("class", "choose-button button");
+        button.setAttribute('onclick', "cs = this.id; dashboard()");
+
+        var txt = document.createTextNode(MasterStorage[i][0]);
+        button.appendChild(txt);
+        div.appendChild(button);
     }
+
 }
 function dashboard() {
     cls()
@@ -631,8 +717,8 @@ function dashboard() {
 
         var editBtn = $("<button class='edit'>Save Changes</button>")
         $("body").append(editBtn);
-	    getNameInput("");
-		$(".newName").val(MasterStorage[cs][0]);
+        getNameInput("");
+        $(".newName").val(MasterStorage[cs][0]);
         if (MasterStorage[cs][2][0].length != 0) {
             for (i = 0; i < MasterStorage[cs][2].length; i++) {
                 wordCount.id++;
@@ -674,11 +760,8 @@ function dashboard() {
             }
         }
         $(".edit").on("click", function() {
-			
-			
-			
-			
-			// LET THE -SAVE- BEGIN!
+
+            // LET THE -SAVE- BEGIN!
             var noun = {
                 container: document.getElementsByClassName("noun"),
                 def: document.getElementsByClassName("newNoun-Def"),
@@ -707,15 +790,15 @@ function dashboard() {
 
             /////////////////////////////////////////
             name = document.getElementById("name").value;
-			MasterStorage[cs] = [[[]], [[]], [[]]]
+            MasterStorage[cs] = [[[]], [[]], [[]]]
             MasterStorage[cs][0] = name;
-			
+
             // saving nouns
             if (body.contains(noun.container[0])) {
                 i = total.nouns;
-				console.log(i)
-				console.log(noun.container.length);
-				console.log(verb);
+                console.log(i)
+                console.log(noun.container.length);
+                console.log(verb);
                 e = -1;
 
                 while (body.contains(noun.container[0])) {
@@ -772,13 +855,6 @@ function dashboard() {
         });
     });
 
-
-
-
-
-
-
-
     // write()
     document.getElementsByClassName("write")[0].onclick = function() {
 
@@ -828,7 +904,7 @@ function dashboard() {
             }
             $(".check-answers").on("click", function() {
                 if (currentnum - 1 != shuffledWrite.length) {
-                    if ($('.fillblank-input').val() == shuffledWrite[currentnum - 1][0]) {
+                    if ($('.fillblank-input').val().toLowerCase() == shuffledWrite[currentnum - 1][0].toLowerCase()) {
                         // Correct
                         $(".write-wrapper").append($("<div class='correct'></div>"));
                         $(".correct").html("<strong>Correct! :D</strong>");
@@ -935,14 +1011,13 @@ function dashboard() {
     }
     // flashcards() 
     document.getElementsByClassName("flashcards")[0].onclick = function() {
-		function testfor_der() {
-			if(shuffledFlashcards[currentnum-1][5] != "") {
-				console.log("YES");
-				return(" | Derivatives: " + shuffledFlashcards[currentnum - 1][5]);
-			} else {
-				return("");
-			}
-		}
+        function testfor_der() {
+            if (shuffledFlashcards[currentnum - 1][5] != "") {
+                return (" | Derivatives: " + shuffledFlashcards[currentnum - 1][5]);
+            } else {
+                return ("");
+            }
+        }
         function testForNouns() {
             if (MasterStorage[cs][1][0].length == 0) {
                 return ([]);
@@ -963,11 +1038,10 @@ function dashboard() {
         getTitle(MasterStorage[cs][0] + " | Flashcards");
         hr();
         shuffledFlashcards = deckShuffle(testForNouns().concat(testForVerbs()));
-		
 
         currentnum = 1;
 
-        // Creating elements, wish i had jquery
+        // Creating elements, wish i had jquery EDIT: I have obtained the QUERY.
         // Contains flashcard:
         a = document.createElement("div");
         a.setAttribute("class", "flashcard-container");
@@ -1033,7 +1107,7 @@ function dashboard() {
 
                 if (shuffledFlashcards.length == currentnum) {
                     $(".next-btn").hide();
-					$('#flashcard-container').append($("<button onclick='dashboard()' class='finish-btn button' id='finish'>Finish</button>"))
+                    $('#flashcard-container').append($("<button onclick='dashboard()' class='finish-btn button' id='finish'>Finish</button>"))
 
                 }
                 if (currentnum < shuffledFlashcards.length) {
@@ -1047,8 +1121,9 @@ function dashboard() {
                 }
             }
         });
-		
+
         $(".back-btn").on("click", function() {
+            $('.finish-btn').remove();
             if (currentnum != 1) {
                 currentnum--;
                 // Flips to the front:
@@ -1078,7 +1153,6 @@ function dashboard() {
                 }
             }
         });
-
 
     }
 }
